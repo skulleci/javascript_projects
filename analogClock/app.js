@@ -1,15 +1,22 @@
-const sec = document.querySelector(".secs");
-const min = document.querySelector(".mins");
-const hours = document.querySelector(".hours");
+setInterval(setClock, 1000);
 
-function tiktak() {
-    let second = new Date().getSeconds();
-    let minute = new Date().getMinutes();
-    let hour = new Date().getHours();
+const hourHand = document.querySelector('.hour');
+const minuteHand = document.querySelector('.minute');
+const secondHand = document.querySelector('.second');
 
-    sec.style.transform = `rotate(${180 + (second * 6)}deg)`
-    min.style.transform = `rotate(${180 + (minute * 6)}deg)`
-    hours.style.transform = `rotate(${180 + (hour * 30)}deg)`
+function setClock() {
+  const currentDate = new Date();
+  const secondsRatio = currentDate.getSeconds() / 60;
+  const minutesRatio = (secondsRatio + currentDate.getMinutes()) / 60;
+  const hoursRatio = (minutesRatio + currentDate.getHours()) / 12;
+  
+  setRotation(secondHand, secondsRatio);
+  setRotation(minuteHand, minutesRatio);
+  setRotation(hourHand, hoursRatio);
 }
 
-setInterval(tiktak, 1000);
+function setRotation(element, rotationRatio) {
+  element.style.setProperty('--rotation', rotationRatio * 360);
+}
+
+setClock();
